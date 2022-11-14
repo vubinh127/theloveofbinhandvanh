@@ -1,0 +1,242 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400&subset=vietnamese");
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    ;
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    color: rgba(0, 0, 0, 0.653);
+    background-image: url(./img/handinhand.jpg);
+    text-shadow: 0 .2px .3px rgba(0, 0, 0, 0.353);
+    background-repeat:no-repeat;
+    background-size:contain;
+    background-position:center;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: none;
+  color: pink;
+}
+
+img {
+  max-width: 100%;
+}
+
+.box {
+  background-color: pink;
+  box-shadow: 2 3px 6px rgb(0 0 0 / 10%);
+  padding: 1rem;
+  width: 60%;
+  border-radius: 26px;
+  opacity: 70%;
+}
+
+.about {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  margin-bottom: 3rem;
+  margin-top: 10px;
+  position: relative;
+}
+
+.info:first-child {
+  flex-grow: 1;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+}
+
+.info:last-child .avatar {
+  order: 2;
+}
+
+.info:last-child .details {
+  text-align: right;
+}
+
+.avatar {
+  width: 70px;
+  border-radius: 50%;
+}
+
+.info .details {
+  margin: 0 1rem;
+}
+
+.info .details p {
+  margin: 4px;
+}
+
+.name {
+  font-size: 15px;
+  text-transform: uppercase;
+}
+
+.born {
+  font-weight: 300;
+}
+
+.time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.time h2,
+.time p {
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+.time h2 {
+  font-size: 2.8rem;
+}
+
+.time p {
+  font-size: 1.5rem;
+}
+
+.sup-time {
+  font-weight: 300;
+}
+
+.say-thank {
+  text-align: center;
+  margin-top: 6rem;
+  font-weight: 100;
+  color: tomato;
+  opacity: 0.8;
+  margin-bottom: 0;
+}
+
+.title {
+  opacity: 0.7;
+}
+
+.heart {
+  position: absolute;
+  top: calc(50% - 25px);
+  left: calc(50% - 25px);
+  width: 50px;
+  transform-origin: 50% 50%;
+  opacity: 0.8;
+  animation: heartBeat 1s ease-in-out infinite;
+}
+#overlay{
+  position:fixed;
+  z-index:99999;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  background:rgba(0,0,0,0.9);
+  transition: 1s 0.4s;
+}
+
+#progress{
+  height:1px;
+  background:#fff;
+  position:absolute;
+  width:0;
+  top:50%;
+}
+#progstat{
+  font-size:0.7em;
+  letter-spacing: 3px;
+  position:absolute;
+  top:50%;
+  margin-top:-40px;
+  width:100%;
+  text-align:center;
+  color:#fff;
+}
+
+video {
+  width: 100%;
+  height: auto;
+}
+
+.modal-content {
+  border-radius: 10px;
+  background-color: #FFC0CB;
+}
+
+
+@keyframes heartBeat {
+  0% {
+    transform: scale(0.9);
+  }
+  45% {
+    transform: scale(1.1);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(0.9);
+  }
+}
+
+@media (max-width: 997px) {
+  .box {
+    width: 84%;
+    margin-bottom: 2rem;
+  }
+  .title {
+    margin: 2rem 0 1rem 0;
+    font-size: 18px;
+  }
+  .about {
+    flex-direction: column;
+    /* align-items: flex-start; */
+    padding: 0;
+  }
+  .info {
+    flex-direction: column;
+  }
+  .avatar {
+    margin-bottom: 0.5rem;
+  }
+  .info p {
+    text-align: center;
+    margin: 10px 0 0 0;
+    font-size: 13px;
+  }
+  .info:last-child .avatar {
+    order: 0;
+  }
+  .heart {
+    position: relative;
+    margin: 1.4rem 0;
+  }
+  .say-thank {
+    margin-top: 2rem;
+  }
+}
+
+
+/* @media (max-width: 768px) {
+    body {
+        background-image: url(./img/mobi.jpg) !important;
+    }
+} */
+
+@media (max-width: 480px) {
+    body {
+        background-image: url(./img/mobismall.jpg) !important;
+    }
+}
