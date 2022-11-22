@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
 var swiper = new Swiper(".box_video", {
   effect: "cards",
   grabCursor: true,
+  loop:true,
 });
 
 ///loadding /
