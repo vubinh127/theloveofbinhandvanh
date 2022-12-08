@@ -116,11 +116,23 @@ img {
 
 .say-thank {
   text-align: center;
-  margin-top: 6rem;
+  margin-top: 4rem;
   font-weight: 100;
   color: tomato;
   opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.box_btn #btn_change_album{
+  background-color: #271f35;
+  padding: 5px 10px;
+  color: #fff;
+  border-radius: 10px;
   margin-bottom: 0;
+}
+
+.binhalbum {
+  display: none;
 }
 
 .title {
