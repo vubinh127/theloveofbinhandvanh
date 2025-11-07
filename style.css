@@ -264,6 +264,18 @@ video {
     }
 } */
 
-@media (max-width: 992px) {
-   
+#englishBtn {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 999;
+    background: #ffffff;
+    color: #ff6cab;
+    border: 2px solid #ff9ecb;
+    font-site: 16px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s;
 }
