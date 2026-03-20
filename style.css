@@ -113,13 +113,50 @@ img {
   font-size: 1.5rem;
 }
 
-.ymd-time {
+.ymd-cards {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 6px;
+  width: 100%;
+}
+
+.ymd-card {
+  background: rgba(140, 100, 200, 0.82);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 80px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(120, 80, 180, 0.25);
+}
+
+.ymd-card span:first-child {
+  font-size: 2rem;
   font-weight: 400;
-  font-size: 1.1rem;
+  color: #fff;
+  line-height: 1.1;
+  -webkit-text-fill-color: #fff;
+  text-shadow: none;
+}
+
+.ymd-label {
+  background: rgba(255,255,255,0.92);
+  color: #7c4dbd;
+  border-radius: 20px;
+  font-size: 0.55rem;
+  font-weight: 700;
   letter-spacing: 0.08em;
-  margin-bottom: 0.3rem;
-  color: inherit;
-  opacity: 0.9;
+  padding: 2px 7px;
+  margin-top: 5px;
+  white-space: nowrap;
+  -webkit-text-fill-color: #7c4dbd;
+  text-shadow: none;
 }
 
 .sup-time {
@@ -263,6 +300,25 @@ video {
   }
   .say-thank {
     margin-top: 2rem;
+  }
+
+  .ymd-cards {
+    gap: 6px;
+  }
+
+  .ymd-card {
+    width: 60px;
+    height: 68px;
+    border-radius: 12px;
+  }
+
+  .ymd-card span:first-child {
+    font-size: 1.6rem;
+  }
+
+  .ymd-label {
+    font-size: 0.5rem;
+    padding: 2px 5px;
   }
 }
 
