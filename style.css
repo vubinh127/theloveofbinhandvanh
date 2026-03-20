@@ -10,8 +10,9 @@ body {
     flex-direction: column;
     min-height: 100vh;
     color: rgba(0, 0, 0, 0.653);
-    background-image: url(./img/IMG_4510.jpg);
+    background-image: url(./img/pc_bg_1.JPEG);
     background-size: cover;
+    background-position: center;
     text-shadow: 0 .2px .3px rgba(0, 0, 0, 0.353);
 }
 
@@ -239,7 +240,7 @@ video { width: 100%; height: auto; }
 
 @media (max-width: 997px) {
     body {
-        background-image: url(./img/IMG_4462.jpg);
+        background-image: url(./img/sp_bg_1.JPEG);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
