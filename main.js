@@ -36,9 +36,27 @@ document.addEventListener('DOMContentLoaded', function () {
   var hour = document.querySelector('.hour');
   var min = document.querySelector('.min');
   var second = document.querySelector('.second');
+  var yearsEl = document.querySelector('.years');
+  var monthsEl = document.querySelector('.months');
+  var ddaysEl = document.querySelector('.ddays');
 
   var startDate = new Date(2021, 2, 20);
   days.innerText = Math.floor((new Date - startDate) / 86400000);
+
+  function updateYMD() {
+    var now = new Date();
+    var y = now.getFullYear() - startDate.getFullYear();
+    var m = now.getMonth() - startDate.getMonth();
+    var d = now.getDate() - startDate.getDate();
+    if (d < 0) { m--; var prevMonth = new Date(now.getFullYear(), now.getMonth(), 0); d += prevMonth.getDate(); }
+    if (m < 0) { y--; m += 12; }
+    yearsEl.innerText = y;
+    monthsEl.innerText = m;
+    ddaysEl.innerText = d;
+  }
+  updateYMD();
+  setInterval(updateYMD, 60000);
+  
   countTime();
 
   function countTime() {
