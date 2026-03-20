@@ -1,118 +1,182 @@
-$(document).ready(function () {
-  "use strict"
+'use strict';
 
-  $(".body").ripples({ //function to get the  ripple water effect 
-    dropRadius: 12,
-    perturbance: 0.01,
+var audioCtx, analyser, sourceNode;
+var audioEl    = document.getElementById('bgAudio');
+var vizPlaying = false;
+var vizMuted   = false;
+var dataArr;
+var fakePhase  = 0;
+
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx  = new (window.AudioContext || window.webkitAudioContext)();
+  analyser  = audioCtx.createAnalyser();
+  analyser.fftSize = 128;
+  dataArr   = new Uint8Array(analyser.frequencyBinCount);
+  sourceNode = audioCtx.createMediaElementSource(audioEl);
+  sourceNode.connect(analyser);
+  analyser.connect(audioCtx.destination);
+}
+
+function vizToggleMute() {
+  vizMuted = !vizMuted;
+  audioEl.muted = vizMuted;
+  document.getElementById('iconUnmute').style.display = vizMuted ? 'none'  : 'block';
+  document.getElementById('iconMute'  ).style.display = vizMuted ? 'block' : 'none';
+}
+
+var canvas = document.getElementById('vizCanvas');
+var ctx2d  = canvas.getContext('2d');
+var BARS   = 40;
+
+function resizeCanvas() {
+  var dpr = window.devicePixelRatio || 1;
+  canvas.width  = canvas.offsetWidth  * dpr;
+  canvas.height = canvas.offsetHeight * dpr;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas, { passive: true });
+
+function drawBars() {
+  var W = canvas.width, H = canvas.height;
+  var bw = (W / BARS) * 0.58, gap = (W / BARS) * 0.42;
+  ctx2d.clearRect(0, 0, W, H);
+
+  if (vizPlaying && analyser) analyser.getByteFrequencyData(dataArr);
+  else fakePhase += 0.035;
+
+  for (var i = 0; i < BARS; i++) {
+    var val = vizPlaying && analyser
+      ? dataArr[Math.floor(i * dataArr.length / BARS)] / 255
+      : 0.07 + 0.05 * Math.sin(fakePhase + i * 0.4) + 0.03 * Math.sin(fakePhase * 1.6 + i * 0.85);
+
+    var bh = Math.max(3, val * H * 0.86);
+    var x  = i * (bw + gap) + gap / 2;
+    var y  = (H - bh) / 2;
+
+    var g = ctx2d.createLinearGradient(0, y, 0, y + bh);
+    g.addColorStop(0, 'rgba(207,45,149,.9)');
+    g.addColorStop(1, 'rgba(207,45,36,.7)');
+    ctx2d.fillStyle = g;
+    ctx2d.beginPath();
+    if (ctx2d.roundRect) ctx2d.roundRect(x, y, bw, bh, 2);
+    else ctx2d.rect(x, y, bw, bh);
+    ctx2d.fill();
+  }
+  requestAnimationFrame(drawBars);
+}
+drawBars();
+
+
+function enterSite() {
+  var overlay = document.getElementById('overlay');
+  overlay.style.opacity = '0';
+  setTimeout(function () { overlay.style.display = 'none'; }, 900);
+
+  initAudio();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  audioEl.play().then(function () { vizPlaying = true; }).catch(function () {});
+}
+
+
+(function () {
+  var prog = document.getElementById('progress');
+  var stat = document.getElementById('progstat');
+  var btn  = document.getElementById('getInBtn');
+  var imgs = Array.from(document.images).filter(function (i) { return i.src; });
+  var tot  = imgs.length, c = 0;
+
+  function onLoad() {
+    c++;
+    var pct = Math.floor(100 / tot * c);
+    prog.style.width = pct + '%';
+    stat.textContent = 'Loading ' + pct + '%';
+    if (c === tot) done();
+  }
+
+  function done() {
+    stat.textContent = 'Ready ♥';
+    prog.style.width = '100%';
+    setTimeout(function () {
+      stat.style.display = 'none';
+      btn.style.display  = 'block';
+    }, 500);
+  }
+
+  if (tot === 0) { done(); return; }
+  imgs.forEach(function (img) {
+    var t = new Image();
+    t.onload = t.onerror = onLoad;
+    t.src = img.src;
   });
-
-  $('#btn_change_album').on('click',function(){
-    if($('.binhalbum').css('display')!='none'){
-      $('.vanhalbum').fadeToggle().show().siblings('.binhalbum').hide();
-    }else if($('.vanhalbum').css('display')!='none'){
-        $('.binhalbum').fadeToggle().show().siblings('.vanhalbum').hide();
-    }
-});
-});
-
-/////No F12
-
-$(document).keydown(function (event) {
-  if (event.keyCode == 123) {
-    return false;
-  }
-  else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) {
-    return false;
-  }
-});
-
-$(document).on("contextmenu", function (e) {
-  e.preventDefault();
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-
-  var days = document.querySelector('.days span');
-  var hour = document.querySelector('.hour');
-  var min = document.querySelector('.min');
-  var second = document.querySelector('.second');
-  var yearsEl = document.querySelector('.years');
-  var monthsEl = document.querySelector('.months');
-  var weeksEl = document.querySelector('.weeks');
-  var ddaysEl = document.querySelector('.ddays');
-
-  var startDate = new Date(2021, 2, 20);
-  days.innerText = Math.floor((new Date - startDate) / 86400000);
-
-  function updateYMD() {
-    var now = new Date();
-    var y = now.getFullYear() - startDate.getFullYear();
-    var m = now.getMonth() - startDate.getMonth();
-    var d = now.getDate() - startDate.getDate();
-    if (d < 0) { m--; var prevMonth = new Date(now.getFullYear(), now.getMonth(), 0); d += prevMonth.getDate(); }
-    if (m < 0) { y--; m += 12; }
-    var w = Math.floor(d / 7);
-    var rd = d % 7;
-    yearsEl.innerText = y;
-    monthsEl.innerText = m;
-    weeksEl.innerText = w;
-    ddaysEl.innerText = rd;
-  }
-  updateYMD();
-  setInterval(updateYMD, 60000);
-
-  countTime();
-
-  function countTime() {
-    let today = new Date();
-    let ms = (today - startDate) % 86400000;
-    hour.innerText = Math.floor(ms / 3600000);
-    min.innerText = Math.floor(ms % 3600000 / 60000);
-    second.innerText = Math.floor(ms % 3600000 % 60000 / 1000);
-  }
-
-  setInterval(countTime, 1000);
-
-}, false);
-
-
-//loading///
-
-; (function () {
-  function id(v) { return document.getElementById(v); }
-  function loadbar() {
-    var ovrl = id("overlay"),
-      prog = id("progress"),
-      stat = id("progstat"),
-      img = document.images,
-      c = 0;
-    tot = img.length;
-
-    function imgLoaded() {
-      c += 1;
-      var perc = ((100 / tot * c) << 0) + "%";
-      prog.style.width = perc;
-      stat.innerHTML = "Loading " + perc;
-      if (c === tot) return doneLoading();
-    }
-    function doneLoading() {
-      ovrl.style.opacity = 0;
-      setTimeout(function () {
-        ovrl.style.display = "none";
-      }, 1200);
-    }
-    for (var i = 0; i < tot; i++) {
-      var tImg = new Image();
-      tImg.onload = imgLoaded;
-      tImg.onerror = imgLoaded;
-      tImg.src = img[i].src;
-    }
-  }
-  document.addEventListener('DOMContentLoaded', loadbar, false);
 }());
 
-var swiper = new Swiper(".box_video", {
-  effect: "cards",
-  grabCursor: true,
-  loop:true,
+
+var modal = document.getElementById('mediaModal');
+
+function openModal() { modal.classList.add('open'); }
+
+function closeModal(e) {
+  if (!e || e.target === modal || e.currentTarget !== modal) {
+    modal.classList.remove('open');
+    modal.querySelectorAll('video').forEach(function (v) { v.pause(); });
+  }
+}
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (window.Swiper) {
+    new Swiper('.box_video', { effect: 'cards', grabCursor: true, loop: true });
+  }
+  if (window.$ && $.fn.ripples) {
+    try { $('body').ripples({ dropRadius: 12, perturbance: 0.01 }); }
+    catch (e) {}
+  }
 });
+
+(function () {
+  var startDate = new Date(2021, 2, 20);
+
+  var elDays    = document.querySelector('.days span');
+  var elHour    = document.querySelector('.hour');
+  var elMin     = document.querySelector('.min');
+  var elSec     = document.querySelector('.second');
+  var elYears   = document.querySelector('.years');
+  var elMonths  = document.querySelector('.months');
+  var elWeeks   = document.querySelector('.weeks');
+  var elDDays   = document.querySelector('.ddays');
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function update() {
+    var now  = new Date();
+    var diff = now - startDate;
+
+    elDays.textContent = Math.floor(diff / 86400000);
+
+    var y = now.getFullYear() - startDate.getFullYear();
+    var m = now.getMonth()    - startDate.getMonth();
+    var d = now.getDate()     - startDate.getDate();
+    if (d < 0) { m--; d += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+    if (m < 0) { y--; m += 12; }
+
+    elYears.textContent  = y;
+    elMonths.textContent = m;
+    elWeeks.textContent  = Math.floor(d / 7);
+    elDDays.textContent  = d % 7;
+
+    var ms = diff % 86400000;
+    elHour.textContent = pad(Math.floor(ms / 3600000));
+    elMin.textContent  = pad(Math.floor(ms % 3600000 / 60000));
+    elSec.textContent  = pad(Math.floor(ms % 60000 / 1000));
+  }
+
+  update();
+  setInterval(update, 1000);
+}());
+
+document.addEventListener('keydown', function (e) {
+  if (e.keyCode === 123) e.preventDefault();
+  if (e.ctrlKey && e.shiftKey && e.keyCode === 73) e.preventDefault();
+});
+document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
