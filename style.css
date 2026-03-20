@@ -113,6 +113,15 @@ img {
   font-size: 1.5rem;
 }
 
+.ymd-time {
+  font-weight: 400;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+  color: inherit;
+  opacity: 0.9;
+}
+
 .sup-time {
   font-weight: 300;
 }
