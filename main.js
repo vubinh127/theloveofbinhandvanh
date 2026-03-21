@@ -1,7 +1,6 @@
 'use strict';
 
-var audioCtx, analyser, sourceNode;
-var audioEl    = document.getElementById('bgAudio');
+var audioCtx, analyser, sourceNode, audioEl;
 var vizPlaying = false;
 var vizMuted   = false;
 var dataArr;
@@ -9,17 +8,19 @@ var fakePhase  = 0;
 
 function initAudio() {
   if (audioCtx) return;
-  audioCtx  = new (window.AudioContext || window.webkitAudioContext)();
-  analyser  = audioCtx.createAnalyser();
+  audioEl    = document.getElementById('bgAudio');
+  audioCtx   = new (window.AudioContext || window.webkitAudioContext)();
+  analyser   = audioCtx.createAnalyser();
   analyser.fftSize = 128;
-  dataArr   = new Uint8Array(analyser.frequencyBinCount);
+  dataArr    = new Uint8Array(analyser.frequencyBinCount);
   sourceNode = audioCtx.createMediaElementSource(audioEl);
   sourceNode.connect(analyser);
   analyser.connect(audioCtx.destination);
 }
 
 function vizToggleMute() {
-  vizMuted = !vizMuted;
+  if (!audioEl) audioEl = document.getElementById('bgAudio');
+  vizMuted      = !vizMuted;
   audioEl.muted = vizMuted;
   document.getElementById('iconUnmute').style.display = vizMuted ? 'none'  : 'block';
   document.getElementById('iconMute'  ).style.display = vizMuted ? 'block' : 'none';
@@ -67,7 +68,6 @@ function drawBars() {
 }
 drawBars();
 
-
 function enterSite() {
   var overlay = document.getElementById('overlay');
   overlay.style.opacity = '0';
@@ -77,7 +77,6 @@ function enterSite() {
   if (audioCtx.state === 'suspended') audioCtx.resume();
   audioEl.play().then(function () { vizPlaying = true; }).catch(function () {});
 }
-
 
 (function () {
   var prog = document.getElementById('progress');
@@ -111,7 +110,6 @@ function enterSite() {
   });
 }());
 
-
 var modal = document.getElementById('mediaModal');
 
 function openModal() { modal.classList.add('open'); }
@@ -128,11 +126,13 @@ document.addEventListener('DOMContentLoaded', function () {
   if (window.Swiper) {
     new Swiper('.box_video', { effect: 'cards', grabCursor: true, loop: true });
   }
+  /* ripple — chạy sau khi jQuery và plugin đã load */
   if (window.$ && $.fn.ripples) {
     try { $('body').ripples({ dropRadius: 12, perturbance: 0.01 }); }
-    catch (e) {}
+    catch (e) { /* WebGL không hỗ trợ thì bỏ qua */ }
   }
 });
+
 
 (function () {
   var startDate = new Date(2021, 2, 20);
@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
   update();
   setInterval(update, 1000);
 }());
+
 
 document.addEventListener('keydown', function (e) {
   if (e.keyCode === 123) e.preventDefault();
