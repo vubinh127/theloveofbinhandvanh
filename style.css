@@ -178,11 +178,30 @@ img {
 }
 
 @keyframes neonRGB {
-    0%   { color: #ff0055; text-shadow: 0 0 8px #ff0055, 0 0 20px #ff0055; }
-    50%  { color: #00ff88; text-shadow: 0 0 8px #00ff88, 0 0 20px #00ff88; }
-    66%  { color: #00cfff; text-shadow: 0 0 8px #00cfff, 0 0 20px #00cfff; }
-    83%  { color: #cc00ff; text-shadow: 0 0 8px #cc00ff, 0 0 20px #cc00ff; }
-    100% { color: #ff0055; text-shadow: 0 0 8px #ff0055, 0 0 20px #ff0055; }
+    0% {
+        color: #ff0055;
+        text-shadow: 0 0 8px #ff0055, 0 0 20px #ff0055;
+    }
+
+    50% {
+        color: #00ff88;
+        text-shadow: 0 0 8px #00ff88, 0 0 20px #00ff88;
+    }
+
+    66% {
+        color: #00cfff;
+        text-shadow: 0 0 8px #00cfff, 0 0 20px #00cfff;
+    }
+
+    83% {
+        color: #cc00ff;
+        text-shadow: 0 0 8px #cc00ff, 0 0 20px #cc00ff;
+    }
+
+    100% {
+        color: #ff0055;
+        text-shadow: 0 0 8px #ff0055, 0 0 20px #ff0055;
+    }
 }
 
 .viz-canvas {
@@ -431,4 +450,127 @@ video {
     cursor: pointer;
     font-weight: 600;
     transition: 0.25s;
+}
+
+@keyframes petals-fall {
+    0% {
+        top: -10%
+    }
+
+    100% {
+        top: 110%
+    }
+}
+
+@keyframes petals-shake {
+    0% {
+        transform: translateX(0) rotate(0deg)
+    }
+
+    25% {
+        transform: translateX(50px) rotate(120deg)
+    }
+
+    50% {
+        transform: translateX(15px) rotate(240deg)
+    }
+
+    75% {
+        transform: translateX(70px) rotate(300deg)
+    }
+
+    100% {
+        transform: translateX(0) rotate(360deg)
+    }
+}
+
+.petal {
+    position: fixed;
+    top: -10%;
+    z-index: 9999;
+    user-select: none;
+    cursor: default;
+    width: 22px;
+    height: 22px;
+    animation-name: petals-fall, petals-shake;
+    animation-duration: 7s, 4s;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+    opacity: 0.85;
+}
+
+.petal:nth-of-type(1) {
+    left: 1%;
+    animation-delay: 0s, 0s
+}
+
+.petal:nth-of-type(2) {
+    left: 10%;
+    animation-delay: 1.5s, 1s;
+    width: 16px;
+    height: 16px
+}
+
+.petal:nth-of-type(3) {
+    left: 20%;
+    animation-delay: 5s, .5s;
+    width: 20px;
+    height: 20px
+}
+
+.petal:nth-of-type(4) {
+    left: 30%;
+    animation-delay: 3s, 2s
+}
+
+.petal:nth-of-type(5) {
+    left: 40%;
+    animation-delay: 2s, 1.5s;
+    width: 18px;
+    height: 18px
+}
+
+.petal:nth-of-type(6) {
+    left: 50%;
+    animation-delay: 7s, 3s;
+    width: 24px;
+    height: 24px
+}
+
+.petal:nth-of-type(7) {
+    left: 60%;
+    animation-delay: 4s, 2s
+}
+
+.petal:nth-of-type(8) {
+    left: 70%;
+    animation-delay: 2s, 1s;
+    width: 16px;
+    height: 16px
+}
+
+.petal:nth-of-type(9) {
+    left: 80%;
+    animation-delay: 1s, 0s;
+    width: 20px;
+    height: 20px
+}
+
+.petal:nth-of-type(10) {
+    left: 90%;
+    animation-delay: 3.5s, 1.5s
+}
+
+.petal:nth-of-type(11) {
+    left: 25%;
+    animation-delay: 1s, 0.5s;
+    width: 18px;
+    height: 18px
+}
+
+.petal:nth-of-type(12) {
+    left: 65%;
+    animation-delay: 5s, 2.5s;
+    width: 22px;
+    height: 22px
 }
