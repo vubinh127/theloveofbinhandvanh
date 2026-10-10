@@ -71,7 +71,12 @@ drawBars();
 function enterSite() {
   var overlay = document.getElementById('overlay');
   overlay.style.opacity = '0';
-  setTimeout(function () { overlay.style.display = 'none'; }, 900);
+  setTimeout(function () { 
+    overlay.style.display = 'none'; 
+    if (window.$) {
+      $('#weddingPopupModal').modal('show');
+    }
+  }, 900);
 
   initAudio();
   if (audioCtx.state === 'suspended') audioCtx.resume();
